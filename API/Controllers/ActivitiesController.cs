@@ -8,7 +8,7 @@ using Domain;
 
 namespace API.Controllers
 {
-    public class ActivitiesController : BaseController
+    public class ActivitiesController : BaseApiController
     {
         private readonly DataContext _context;
         public ActivitiesController(DataContext context)
