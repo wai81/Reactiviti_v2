@@ -6,9 +6,10 @@ interface Props {
     activity: Activity | undefined;
     closeForm: () => void;
     cerateOrEdit: (activity: Activity) => void;
+    submitting: boolean;
 }
 
-export default function ActivityDetails({ activity: selectedActivity, closeForm, cerateOrEdit }: Props) {
+export default function ActivityDetails({ activity: selectedActivity, closeForm, cerateOrEdit, submitting }: Props) {
 
     const initialState = selectedActivity ?? {
         id: '',
@@ -33,15 +34,15 @@ export default function ActivityDetails({ activity: selectedActivity, closeForm,
 
     return (
         <Segment clearing>
-            <Form onSubmit={handelSubmit} autoComlete='off'>
-                <Form.Input placeholder='Titel' value={activity.title} name='title' onChange={handleInutChange} />
-                <Form.TextArea placeholder='Description' value={activity.description} name='description' onChange={handleInutChange}  />
+            <Form onSubmit = {handelSubmit} autoComlete='off'>
+                <Form.Input placeholder = 'Titel' value={activity.title} name='title' onChange={handleInutChange} />
+                <Form.TextArea placeholder = 'Description' value={activity.description} name='description' onChange={handleInutChange}  />
                 <Form.Input placeholder='Category' value={activity.category} name='category' onChange={handleInutChange} />
-                <Form.Input placeholder='Date' value={activity.date} name='date' onChange={handleInutChange} />
+                <Form.Input type = 'date' placeholder='Date' value={activity.date} name='date' onChange={handleInutChange} />
                 <Form.Input placeholder='City' value={activity.city} name='city' onChange={handleInutChange} />
                 <Form.Input placeholder='Venue' value={activity.venue} name='venue' onChange={handleInutChange} />
-                <Button floated='right' positive type='submit' content='Submit' />
-                <Button onClick={closeForm} floated='right' type='button' content='Cancel' />
+                <Button loading={submitting} floated = 'right' positive type='submit' content='Submit' />
+                <Button onClick = {closeForm} floated='right' type='button' content='Cancel' />
             </Form>
         </Segment>
     )

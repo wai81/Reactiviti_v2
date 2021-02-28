@@ -15,32 +15,35 @@ interface Props {
     closeForm: () => void;
     cerateOrEdit: (activity: Activity) => void;
     deleteActivity: (id: string) => void;
+    submitting: boolean;
 }
 
 export default function ActivityDasboard({ activities, selectedActivity, deleteActivity,
-    selectActivity, cancelSelectActivity, editMode, openForm, closeForm, cerateOrEdit }: Props) {
+    selectActivity, cancelSelectActivity, editMode, openForm, closeForm, cerateOrEdit, submitting }: Props) {
     return (
         <Grid>
             <Grid.Column width='10'>
                 <ActivityList
-                    activities={activities}
-                    selectActivity={selectActivity}
-                    deleteActivity={deleteActivity}
+                    activities = {activities}
+                    selectActivity = {selectActivity}
+                    deleteActivity = {deleteActivity}
+                    submitting = {submitting}
                 />
             </Grid.Column>
             <Grid.Column width='6'>
                 {selectedActivity && !editMode &&
                     <ActivityDetails
-                        activity={selectedActivity}
-                        cancelSelectActivity={cancelSelectActivity}
-                        openForm={openForm}
+                        activity = {selectedActivity}
+                        cancelSelectActivity = {cancelSelectActivity}
+                        openForm = {openForm}
 
                     />}
                 {editMode &&
                     <ActivityForm
-                        closeForm={closeForm}
-                        activity={selectedActivity}
-                        cerateOrEdit={cerateOrEdit}
+                        closeForm = {closeForm}
+                        activity = {selectedActivity}
+                        cerateOrEdit = {cerateOrEdit}
+                        submitting = {submitting}
                     />}
             </Grid.Column>
         </Grid>
