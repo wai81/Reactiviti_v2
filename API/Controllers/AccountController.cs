@@ -26,7 +26,7 @@ namespace API.Controllers
             _signInManager = signInManager;
             _userManager = userManager;
         }
-
+        
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
@@ -43,17 +43,19 @@ namespace API.Controllers
 
             return Unauthorized();
         }
-
+        
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
-            if( await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email))
+            if (await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email))
             {
-                return BadRequest("Email taken");
+                ModelState.AddModelError("email","Email taken");
+                return ValidationProblem();
             }
-            if( await _userManager.Users.AnyAsync(x => x.UserName == registerDto.Username))
+            if (await _userManager.Users.AnyAsync(x => x.UserName == registerDto.Username))
             {
-                return BadRequest("UserName  taken");
+                ModelState.AddModelError("username","Username taken");
+                return ValidationProblem();
             }
 
             var user = new AppUser
@@ -63,7 +65,7 @@ namespace API.Controllers
                 UserName = registerDto.Username
             };
 
-            var result =  await _userManager.CreateAsync(user, registerDto.Password);
+            var result = await _userManager.CreateAsync(user, registerDto.Password);
             if (result.Succeeded)
             {
                 return CreateUserObject(user);
@@ -81,15 +83,15 @@ namespace API.Controllers
             return CreateUserObject(user);
         }
 
-        public UserDto CreateUserObject(AppUser user)
+        private UserDto CreateUserObject(AppUser user)
         {
-             return new UserDto
-                {
-                    DisplayName = user.DisplayName,
-                    Image = null,
-                    Token =  _tokenService.CreateToken(user),
-                    Username =  user.UserName
-                };
+            return new UserDto
+            {
+                DisplayName = user.DisplayName,
+                Image = null,
+                Token = _tokenService.CreateToken(user),
+                Username = user.UserName
+            };
         }
 
     }
