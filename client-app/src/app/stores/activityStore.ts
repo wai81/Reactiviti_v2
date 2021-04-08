@@ -166,6 +166,7 @@ export default class ActivityStore {
         }
     }
 
+
     cancelActivityToggle = async () => {
         this.loading = true;
         try {
@@ -180,4 +181,5 @@ export default class ActivityStore {
             runInAction(() => this.loading = false);
         }
     }
+    
 }

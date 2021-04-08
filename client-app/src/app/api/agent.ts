@@ -46,7 +46,11 @@ axios.interceptors.response.use(async response => {
             }
             break;
         case 401:
-            toast.error('unauthorised');
+            //toast.error('unauthorised');
+            if (status === 401 && headers['www-authenticate']?.startsWith('Bearer error="invalid_token"')) {
+                store.userStore.logout();
+                toast.error('Session expired - please login again');
+            }
             break;
         case 404:
             history.push('/not-found');
@@ -94,6 +98,7 @@ const Profiles ={
     },
     setMainPhoto: (id: string) => requests.post(`/photos/${id}/setMain`, {}),
     deletePhoto: (id: string) => requests.del(`/photos/${id}`),
+    updateProfile: (profile: Partial<Profile>) => requests.put(`/profiles`, profile),
 }
 
 const agent = {
