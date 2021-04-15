@@ -34,7 +34,7 @@ export default class ActivityStore {
     }
 
     loadActivities = async () => {
-        this.setLoadinInitial(true);
+        this.loadingInitial = true;
         try {
             const activities = await agent.Activities.list();
             activities.forEach(activity => {
@@ -180,6 +180,21 @@ export default class ActivityStore {
         } finally {
             runInAction(() => this.loading = false);
         }
+    }
+
+    // updateAttendeeFollowing = (username: string) => {
+    //     this.activityRegistry.forEach(activity => {
+    //         activity.attendees.forEach(attendee => {
+    //             if (attendee.username === username) {
+    //                 attendee.following ? attendee.followersCount-- : attendee.followersCount++;
+    //                 attendee.following = !attendee.following;
+    //             }
+    //         })
+    //     })
+    // }
+
+    clearSelectedActivity = () => {
+        this.selectedActivity = undefined;
     }
     
 }

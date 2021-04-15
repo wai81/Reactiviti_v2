@@ -31,8 +31,8 @@ namespace Application.Activities
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var activity = await _context.Activities
-                .Include(a => a.Attendees).ThenInclude(u => u.AppUser)
-                .SingleOrDefaultAsync(x => x.Id == request.Id);
+                    .Include(a => a.Attendees).ThenInclude(u => u.AppUser)
+                    .SingleOrDefaultAsync(x => x.Id == request.Id);
 
                 if (activity == null) return null;
                 var user = await _context.Users.FirstOrDefaultAsync(x =>
@@ -61,7 +61,7 @@ namespace Application.Activities
 
                 var result = await _context.SaveChangesAsync() > 0;
 
-                return result ? Result<Unit>.Success(Unit.Value) : Result<Unit>.Failure("Problem updating Attendace");
+                return result ? Result<Unit>.Success(Unit.Value) : Result<Unit>.Failure("Problem updating attendance");
             }
         }
     }

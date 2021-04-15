@@ -15,9 +15,7 @@ namespace API.Services
         public TokenService(IConfiguration config)
         {
             _config = config;
-
         }
-
         public string CreateToken(AppUser user)
         {
             var claims = new List<Claim>

@@ -14,17 +14,15 @@ const sleep = (delay: number) => {
 
 axios.defaults.baseURL = 'http://localhost:5000/api/';
 
-axios.interceptors.request.use(config =>{
+axios.interceptors.request.use(config => {
     const token = store.commonStore.token;
     if (token) config.headers.Authorization = `Bearer ${token}`
     return config;
 })
 
 axios.interceptors.response.use(async response => {
- 
         await sleep(1000);
         return response;
-  
 }, (error: AxiosError) =>{
     const {data, config, status} = error.response!;
     switch(status){
@@ -43,14 +41,16 @@ axios.interceptors.response.use(async response => {
                     }
                 }
                 throw modalStateErrors.flat();
+            } else {
+                toast.error(data);
             }
             break;
         case 401:
-            //toast.error('unauthorised');
-            if (status === 401 && headers['www-authenticate']?.startsWith('Bearer error="invalid_token"')) {
-                store.userStore.logout();
-                toast.error('Session expired - please login again');
-            }
+            toast.error('unauthorised');
+            // if (status === 401 && headers['www-authenticate']?.startsWith('Bearer error="invalid_token"')) {
+            //     store.userStore.logout();
+            //     toast.error('Session expired - please login again');
+            // }
             break;
         case 404:
             history.push('/not-found');
@@ -84,7 +84,7 @@ const Activities = {
 const Account = {
     current: () => requests.get<User>('/account'),
     login: (user: UserFormValues) => requests.post<User>('/account/login', user),
-    register: (user: UserFormValues) =>  requests.post<User>('/account/register', user),
+    register: (user: UserFormValues) =>  requests.post<User>('/account/register', user)
 }
 
 const Profiles ={
@@ -98,7 +98,7 @@ const Profiles ={
     },
     setMainPhoto: (id: string) => requests.post(`/photos/${id}/setMain`, {}),
     deletePhoto: (id: string) => requests.del(`/photos/${id}`),
-    updateProfile: (profile: Partial<Profile>) => requests.put(`/profiles`, profile),
+    updateProfile: (profile: Partial<Profile>) => requests.put(`/profiles`, profile)
 }
 
 const agent = {
